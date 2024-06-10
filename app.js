@@ -9,8 +9,17 @@ const app = Vue.createApp({
       monsterHealth: 100,
       specialAttackAvailable: true,
       winner: null,
-      battleLog: []
+      battleLog: [],
     };
+  },
+  mounted() {
+    document.addEventListener(
+      "dblclick",
+      function (event) {
+        event.preventDefault();
+      },
+      { passive: false }
+    );
   },
   computed: {
     monsterBarStyles() {
@@ -50,15 +59,15 @@ const app = Vue.createApp({
   },
   methods: {
     surrender() {
-        this.winner = 'monster';
+      this.winner = "monster";
     },
 
     newGame() {
-        this.winner = null;
-        this.playerHealth = 100;
-        this.monsterHealth = 100;
-        this.specialAttackAvailable = true;
-        this.battleLog = [];
+      this.winner = null;
+      this.playerHealth = 100;
+      this.monsterHealth = 100;
+      this.specialAttackAvailable = true;
+      this.battleLog = [];
     },
 
     playerAttack() {
@@ -67,7 +76,7 @@ const app = Vue.createApp({
       // console.log(attackValue)
       this.monsterHealth -= attackValue;
       this.specialAttackAvailable = true;
-      this.addLogMessage('Player', 'Attack', attackValue);
+      this.addLogMessage("Player", "Attack", attackValue);
       this.monsterAttack();
     },
 
@@ -75,7 +84,7 @@ const app = Vue.createApp({
       const attackValue = getRandomValue(8, 16);
       //   console.log(attackValue)
       this.playerHealth -= attackValue;
-      this.addLogMessage('Monster', 'Attack', attackValue);
+      this.addLogMessage("Monster", "Attack", attackValue);
     },
 
     playerSpecialAttack() {
@@ -84,11 +93,11 @@ const app = Vue.createApp({
       // console.log(randNum);
       if (randNum < 0.35) {
         // console.log("Missed!");
-        this.addLogMessage('Player', 'Special Attack', 'Missed!');
+        this.addLogMessage("Player", "Special Attack", "Missed!");
       } else {
         const specialAttackValue = getRandomValue(12, 25);
         this.monsterHealth -= specialAttackValue;
-        this.addLogMessage('Player', 'Special Attack', specialAttackValue);
+        this.addLogMessage("Player", "Special Attack", specialAttackValue);
         // console.log(specialAttackValue)
       }
 
@@ -100,22 +109,22 @@ const app = Vue.createApp({
       const healValue = getRandomValue(8, 18);
       if (this.playerHealth + healValue > 100) {
         this.playerHealth = 100;
-        this.addLogMessage('Player', 'Heal', 'Healed to full HP!');
+        this.addLogMessage("Player", "Heal", "Healed to full HP!");
       } else {
         this.playerHealth += healValue;
-        this.addLogMessage('Player', 'Heal', healValue);
+        this.addLogMessage("Player", "Heal", healValue);
       }
 
       this.monsterAttack();
     },
 
     addLogMessage(who, what, value) {
-        this.battleLog.unshift({
-            byWho: who,
-            actionType: what,
-            actionValue: value
-        });
-    }
+      this.battleLog.unshift({
+        byWho: who,
+        actionType: what,
+        actionValue: value,
+      });
+    },
   },
 });
 
